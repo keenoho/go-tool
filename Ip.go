@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"io/ioutil"
 	"net"
 	"net/http"
 )
@@ -24,7 +25,7 @@ func ClientIp(request *http.Request) string {
 	}
 }
 
-func ServerIp() string {
+func ServerInternalIp() string {
 	ifaces, err := net.Interfaces()
 	if err != nil {
 		return ""
@@ -56,4 +57,16 @@ func ServerIp() string {
 		}
 	}
 	return ""
+}
+
+func ServerPublicIp() string {
+	resp, err := http.Get("http://ipinfo.io/ip")
+	if err != nil {
+		return ""
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return ""
+	}
+	return string(body)
 }
