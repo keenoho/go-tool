@@ -20,24 +20,33 @@ func PKCS7Padding(ciphertext []byte) []byte {
 	return append(ciphertext, latest...)
 }
 
-func DecryptAes(str string, key string) string {
-	ciphertext, _ := hex.DecodeString(strings.ToUpper(str))
+func EncryptAes(str string, key string) string {
+	origData := []byte(str)
+	origData = PKCS7Padding(origData)
 	pkey := []byte(key)
-	block, _ := aes.NewCipher(pkey)
+	block, err := aes.NewCipher(pkey)
+	if err != nil {
+		panic(err)
+	}
+	blockModel := cipher.NewCBCEncrypter(block, pkey)
+	encrypted := make([]byte, len(origData))
+	blockModel.CryptBlocks(encrypted, origData)
+	return strings.ToUpper(hex.EncodeToString(encrypted))
+}
+
+func DecryptAes(str string, key string) string {
+	ciphertext, err := hex.DecodeString(strings.ToUpper(str))
+	if err != nil {
+		panic(err)
+	}
+	pkey := []byte(key)
+	block, err := aes.NewCipher(pkey)
+	if err != nil {
+		panic(err)
+	}
 	blockModel := cipher.NewCBCDecrypter(block, pkey)
 	plantText := make([]byte, len(ciphertext))
 	blockModel.CryptBlocks(plantText, ciphertext)
 	plantText = PKCS7UnPadding(plantText)
 	return string(plantText)
-}
-
-func EncryptAes(str string, key string) string {
-	origData := []byte(str)
-	origData = PKCS7Padding(origData)
-	pkey := []byte(key)
-	block, _ := aes.NewCipher(pkey)
-	blockModel := cipher.NewCBCEncrypter(block, pkey)
-	encrypted := make([]byte, len(origData))
-	blockModel.CryptBlocks(encrypted, origData)
-	return strings.ToUpper(hex.EncodeToString(encrypted))
 }
