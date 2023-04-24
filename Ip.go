@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// ClientIp 客户端ip
 func ClientIp(request *http.Request) string {
 	aliCDNRealIp := request.Header.Get("ali-cdn-real-ip")
 	xForwardedFor := request.Header.Get("x-forwarded-for")
@@ -25,20 +26,21 @@ func ClientIp(request *http.Request) string {
 	}
 }
 
+// ServerInternalIp 服务端内网ip
 func ServerInternalIp() string {
-	ifaces, err := net.Interfaces()
+	faces, err := net.Interfaces()
 	if err != nil {
 		return ""
 	}
-	for _, iface := range ifaces {
-		if iface.Flags&net.FlagUp == 0 {
+	for _, face := range faces {
+		if face.Flags&net.FlagUp == 0 {
 			continue
 		}
-		if iface.Flags&net.FlagLoopback != 0 {
+		if face.Flags&net.FlagLoopback != 0 {
 			continue
 		}
-		addrs, _ := iface.Addrs()
-		for _, addr := range addrs {
+		adds, _ := face.Addrs()
+		for _, addr := range adds {
 			var ip net.IP
 			switch v := addr.(type) {
 			case *net.IPNet:
@@ -59,6 +61,7 @@ func ServerInternalIp() string {
 	return ""
 }
 
+// ServerPublicIp 服务端公网ip
 func ServerPublicIp() string {
 	resp, err := http.Get("http://ipinfo.io/ip")
 	if err != nil {
