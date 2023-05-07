@@ -47,8 +47,8 @@ func (li *List) Insert(index int, value any) {
 	li.Value = newValue
 }
 
-func (li *List) Concat(targetli List) List {
-	li.Value = append(li.Value, targetli.Value...)
+func (li *List) Concat(target List) List {
+	li.Value = append(li.Value, target.Value...)
 	return *li
 }
 
