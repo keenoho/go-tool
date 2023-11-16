@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"fmt"
 	"math/rand"
 	"sort"
 )
@@ -20,4 +21,16 @@ func StringRandom(length int) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+// 左补齐
+func StringPadStart(str string, width int, padStr string) string {
+	fillStr := "%" + padStr + "*s"
+	return fmt.Sprintf(fillStr, width, str)
+}
+
+// 右补齐
+func StringPadEnd(str string, width int, padStr string) string {
+	mLen := width - len(str)
+	return str + StringPadStart("", mLen, padStr)
 }
