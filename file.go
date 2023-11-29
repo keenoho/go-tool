@@ -1,7 +1,7 @@
 package tool
 
 import (
-	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -19,6 +19,6 @@ func FileReadOne(targetpath string) (string, error) {
 		return "", err
 	}
 	defer file.Close()
-	content, err := io.ReadAll(file)
+	content, err := ioutil.ReadAll(file)
 	return string(content), err
 }

@@ -1,7 +1,7 @@
 package tool
 
 import (
-	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 )
@@ -67,7 +67,7 @@ func ServerPublicIp() string {
 	if err != nil {
 		return ""
 	}
-	body, err := io.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return ""
 	}
