@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -10,4 +11,14 @@ func FileGetDirName(targetPath string) string {
 		targetPath, _ = os.Getwd()
 	}
 	return filepath.Base(targetPath)
+}
+
+func FileReadOne(targetpath string) (string, error) {
+	file, err := os.Open(targetpath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	content, err := io.ReadAll(file)
+	return string(content), err
 }
