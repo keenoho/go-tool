@@ -13,12 +13,17 @@ func FileGetDirName(targetPath string) string {
 	return filepath.Base(targetPath)
 }
 
-func FileReadOne(targetpath string) (string, error) {
-	file, err := os.Open(targetpath)
+func FileReadToBytes(targetPath string) ([]byte, error) {
+	file, err := os.Open(targetPath)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer file.Close()
 	content, err := ioutil.ReadAll(file)
+	return content, err
+}
+
+func FileReadToString(targetPath string) (string, error) {
+	content, err := FileReadToBytes(targetPath)
 	return string(content), err
 }

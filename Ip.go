@@ -1,7 +1,6 @@
 package tool
 
 import (
-	"io/ioutil"
 	"net"
 	"net/http"
 )
@@ -59,17 +58,4 @@ func ServerInternalIp() string {
 		}
 	}
 	return ""
-}
-
-// ServerPublicIp 服务端公网ip
-func ServerPublicIp() string {
-	resp, err := http.Get("http://ipinfo.io/ip")
-	if err != nil {
-		return ""
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return ""
-	}
-	return string(body)
 }
