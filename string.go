@@ -3,14 +3,16 @@ package tool
 import (
 	"fmt"
 	"math/rand"
-	"sort"
 )
 
 // StringInList 字符串数组中是否存在目标字符串
 func StringInList(target string, list []string) bool {
-	sort.Strings(list)
-	index := sort.SearchStrings(list, target)
-	return index < len(list) && list[index] == target
+	for _, v := range list {
+		if v == target {
+			return true
+		}
+	}
+	return false
 }
 
 // 随机字符串
