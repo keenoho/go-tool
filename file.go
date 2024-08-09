@@ -1,17 +1,9 @@
 package tool
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
-	"path/filepath"
 )
-
-func FileGetDirName(targetPath string) string {
-	if len(targetPath) < 1 {
-		targetPath, _ = os.Getwd()
-	}
-	return filepath.Base(targetPath)
-}
 
 func FileReadToBytes(targetPath string) ([]byte, error) {
 	file, err := os.Open(targetPath)
@@ -19,7 +11,7 @@ func FileReadToBytes(targetPath string) ([]byte, error) {
 		return nil, err
 	}
 	defer file.Close()
-	content, err := ioutil.ReadAll(file)
+	content, err := io.ReadAll(file)
 	return content, err
 }
 

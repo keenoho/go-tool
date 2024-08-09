@@ -72,6 +72,9 @@ func DbInsertEntityValue(source any, field string, value any) error {
 	if elemField.Type.Kind() != reflect.ValueOf(value).Kind() {
 		return fmt.Errorf("the value kind is not '%v'", elemField.Type.Kind())
 	}
+	if !val.Elem().FieldByName(field).CanSet() {
+		return fmt.Errorf("the value is can not set '%v'", value)
+	}
 	val.Elem().FieldByName(field).Set(reflect.ValueOf(value))
 
 	return nil

@@ -13,7 +13,7 @@ func StructConvert(source interface{}, target interface{}, excludeKeys ...string
 	for i := 0; i < sourceType.NumField(); i++ {
 		fieldName := sourceType.Field(i).Name
 		fieldValue := sourceValue.FieldByName(fieldName)
-		isExclude := StringInList(fieldName, excludeKeys)
+		isExclude := ArrayContainString(excludeKeys, fieldName)
 
 		if isExclude {
 			continue

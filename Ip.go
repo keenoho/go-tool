@@ -3,30 +3,37 @@ package tool
 import (
 	"net"
 	"net/http"
+	"strings"
 )
 
-// ClientIp 客户端ip
-func ClientIp(request *http.Request) string {
+// 客户端ip
+func IpClient(request *http.Request) string {
+	result := ""
 	aliCDNRealIp := request.Header.Get("ali-cdn-real-ip")
 	xForwardedFor := request.Header.Get("x-forwarded-for")
 	xRealIp := request.Header.Get("x-real-ip")
 	xForwardFor := request.Header.Get("x-forward-for")
 
 	if aliCDNRealIp != "" {
-		return aliCDNRealIp
+		result = aliCDNRealIp
 	} else if xForwardedFor != "" {
-		return xForwardedFor
+		result = xForwardedFor
 	} else if xRealIp != "" {
-		return xRealIp
+		result = xRealIp
 	} else if xForwardFor != "" {
-		return xForwardFor
-	} else {
-		return ""
+		result = xForwardFor
 	}
+
+	if len(result) > 0 {
+		arr := strings.Split(result, ",")
+		result = strings.Trim(arr[0], " ")
+	}
+
+	return result
 }
 
-// ServerInternalIp 服务端内网ip
-func ServerInternalIp() string {
+// 服务端内网
+func IpServerInternal() string {
 	faces, err := net.Interfaces()
 	if err != nil {
 		return ""

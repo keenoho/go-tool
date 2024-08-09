@@ -5,16 +5,6 @@ import (
 	"math/rand"
 )
 
-// StringInList 字符串数组中是否存在目标字符串
-func StringInList(target string, list []string) bool {
-	for _, v := range list {
-		if v == target {
-			return true
-		}
-	}
-	return false
-}
-
 // 随机字符串
 func StringRandom(length int) string {
 	letters := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~=-")

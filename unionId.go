@@ -139,7 +139,7 @@ func UnionId32String() string {
 }
 
 func init() {
-	seg := strings.Split(ServerInternalIp(), ".")
+	seg := strings.Split(IpServerInternal(), ".")
 	for i := 0; i < len(seg); i++ {
 		val := seg[i]
 		str := fmt.Sprintf("%03s", val)
