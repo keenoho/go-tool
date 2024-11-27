@@ -26,3 +26,13 @@ func StringPadEnd(str string, width int, padStr string) string {
 	mLen := width - len(str)
 	return str + StringPadStart("", mLen, padStr)
 }
+
+// 字符串数组中含有目标字符串
+func StringListIncludes(list []string, target string) bool {
+	for _, item := range list {
+		if item == target {
+			return true
+		}
+	}
+	return false
+}
