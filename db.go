@@ -1,7 +1,6 @@
 package tool
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -13,7 +12,7 @@ func DbMakePageSize(page int, size int) (offset int, limit int) {
 	return offset, limit
 }
 
-func DbStructToSqlSelect(stc any) string {
+func DbStructToSelectSql(stc any) string {
 	stcType := reflect.TypeOf(stc)
 	if stcType.Kind() != reflect.Struct {
 		return "*"
@@ -52,30 +51,4 @@ func DbStructToSqlSelect(stc any) string {
 		}
 	}
 	return sql
-}
-
-func DbInsertEntityValue(source any, field string, value any) error {
-	tp := reflect.TypeOf(source)
-	if !(tp.Kind() == reflect.Ptr && tp.Elem().Kind() == reflect.Struct) {
-		return errors.New("the source must be a gorm entity Ptr Struct")
-	}
-	if len(field) < 1 {
-		return errors.New("the format of field is error")
-	}
-
-	elem := tp.Elem()
-	elemField, hasElemField := elem.FieldByName(field)
-	if !hasElemField {
-		return fmt.Errorf("the field %s is not exist in this entity", field)
-	}
-	val := reflect.ValueOf(source)
-	if elemField.Type.Kind() != reflect.ValueOf(value).Kind() {
-		return fmt.Errorf("the value kind is not '%v'", elemField.Type.Kind())
-	}
-	if !val.Elem().FieldByName(field).CanSet() {
-		return fmt.Errorf("the value is can not set '%v'", value)
-	}
-	val.Elem().FieldByName(field).Set(reflect.ValueOf(value))
-
-	return nil
 }
